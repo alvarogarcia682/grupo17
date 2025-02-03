@@ -34,6 +34,7 @@ public class RequestDecoratorFactory {
                 case "GET" -> new GetRequestDecorator(request);
                 // case "POST" -> new PostRequestDecorator(request, objectMapper);
                 // case "POST" -> new PutRequestDecorator(request, objectMapper);
+                // case "POST" -> new PatchRequestDecorator(request, objectMapper);
                 case "POST" -> new DeleteRequestDecorator(request, objectMapper);
                 default -> throw new IllegalArgumentException("Invalid http method");
             };
