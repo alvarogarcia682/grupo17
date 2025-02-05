@@ -3,12 +3,10 @@ package com.unir.forum.ms_books_catalogue.service;
 import com.unir.forum.ms_books_catalogue.models.libros.Libro;
 import com.unir.forum.ms_books_catalogue.repositorio.LibroRepositorio;
 import org.springframework.stereotype.Service;
-import lombok.extern.slf4j.Slf4j;
 
-
+import java.time.LocalDate;
 import java.util.List;
 
-@Slf4j
 @Service
 public class LibroService {
 
@@ -18,17 +16,14 @@ public class LibroService {
         this.libroRepositorio = libroRepositorio;
     }
 
-    // Obtener todos los libros
     public List<Libro> obtenerTodosLosLibros() {
         return libroRepositorio.findAll();
     }
 
-    // Crear un nuevo libro
     public Libro crearLibro(Libro libro) {
         return libroRepositorio.save(libro);
     }
 
-    // Modificar un libro
     public Libro libroPatch(Long id, Libro libroPatched) {
         return libroRepositorio.findById(id).map(libro -> {
             if (libroPatched.getTitle() != null) libro.setTitle(libroPatched.getTitle());
@@ -43,4 +38,14 @@ public class LibroService {
             return libroRepositorio.save(libro);
         }).orElse(null);
     }
+
+    public void eliminarLibro(Long id) {
+        libroRepositorio.deleteById(id);
+    }
+
+    public List<Libro> buscarLibros(String title, String author, String category, String isbn,
+                                    LocalDate publicationDate, Integer rating, Boolean visibility) {
+        return libroRepositorio.buscarPorAtributos(title, author, category, isbn, publicationDate, rating, visibility);
+    }
+
 }
