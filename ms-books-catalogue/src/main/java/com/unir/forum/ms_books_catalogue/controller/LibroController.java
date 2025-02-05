@@ -31,4 +31,14 @@ public class LibroController {
         Libro libroCreado = libroService.crearLibro(libro);
         return ResponseEntity.ok(libroCreado);
     }
+
+    // Endpoint para actualizar parcialmente un libro
+    @PatchMapping("/{id}")
+    public ResponseEntity<Libro> libroPatch(@PathVariable Long id, @RequestBody Libro libroPatched) {
+        Libro libroModificado = libroService.libroPatch(id, libroPatched);
+        return libroModificado != null ? ResponseEntity.ok(libroModificado) : ResponseEntity.notFound().build();
+    }
+
+
+
 }
