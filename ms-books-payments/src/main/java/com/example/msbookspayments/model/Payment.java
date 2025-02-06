@@ -15,15 +15,8 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
-    private String author;
-
-    @Column(name = "publication_date")
-    private LocalDate publicationDate;
-
-    private String category;
     private String isbn;
-    private int rating;
-    private boolean visibility;
-    private int stock;
+    private String customerName;
+    private LocalDateTime purchaseDate;
+    private double amount;
 }
