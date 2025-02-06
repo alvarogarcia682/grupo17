@@ -1,6 +1,7 @@
 package com.example.msbookspayments.controller;
 
 import com.example.msbookspayments.model.Payment;
+import com.example.msbookspayments.model.PaymentRequest;
 import com.example.msbookspayments.service.PaymentService;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,8 +15,9 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
-    @PostMapping
-    public Payment makePayment(@RequestParam String isbn, @RequestParam String customerName, @RequestParam double amount) {
-        return paymentService.registerPayment(isbn, customerName, amount);
+    @GetMapping
+    public Payment makePayment(@RequestBody PaymentRequest paymentRequest) {
+        return paymentService.registerPayment(paymentRequest.getIsbn(),
+                paymentRequest.getCustomerName(), paymentRequest.getAmount());
     }
 }

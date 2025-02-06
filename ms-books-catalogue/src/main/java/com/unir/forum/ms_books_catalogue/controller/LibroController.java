@@ -55,6 +55,10 @@ public class LibroController {
         return libroService.buscarLibros(title, author, category, isbn, publicationDate, rating, visibility);
     }
 
+    @PostMapping("/validar")
+    public boolean validar(@RequestParam(required = false) String isbn) {
+        return !libroService.buscarLibros(null, null, null, isbn, null, null, null).isEmpty();
+    }
 
 
 }
