@@ -15,7 +15,7 @@ public class PaymentController {
         this.paymentService = paymentService;
     }
 
-    @GetMapping
+    @PostMapping
     public Payment makePayment(@RequestBody PaymentRequest paymentRequest) {
         return paymentService.registerPayment(paymentRequest.getIsbn(),
                 paymentRequest.getCustomerName(), paymentRequest.getAmount());

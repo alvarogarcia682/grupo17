@@ -56,7 +56,8 @@ public class LibroController {
     }
 
     @PostMapping("/validar")
-    public boolean validar(@RequestParam(required = false) String isbn) {
+    public boolean validar(@RequestParam String isbn) {
+        System.out.println(isbn);
         return !libroService.buscarLibros(null, null, null, isbn, null, null, null).isEmpty();
     }
 
