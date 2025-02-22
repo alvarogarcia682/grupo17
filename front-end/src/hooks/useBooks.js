@@ -4,17 +4,38 @@ export const useBooks = () => {
 
     const [books, setBooks] = useState([]);
     useEffect(() => {
+        const fetchBooks = async () => {
+            try {
+                const response = await fetch(`${process.env.REACT_APP_GATEWAY_URL}/ms-books-catalogue/api/libros`, {
+                    method: "POST", headers: {
+                        "Content-Type": "application/json",
+                    }, body: JSON.stringify({
+                        targetMethod: "GET", queryParams: {}, body: {},
+                    }),
+                });
 
-        setTimeout(() => {
-            setBooks([
-                {id: "1", name: "American Gods", author: "Neil Gaiman", genre: "Fantasía"},
-                {id: "2", name: "On the Road", author: "Jack Kerouac", genre: "Novela Beat"},
-                {id: "3", name: "Women", author: "Charles Bukowski", genre: "Novela"},
-                {id: "4", name: "Kafka on the Shore", author: "Hakuri Murakami", genre: "Realismo Mágico"},
-                {id: "5", name: "The Prince", author: "Nicolas Maquiavelo", genre: "Tratado Político"},
-                {id: "6", name: "The Road Back", author: "Erich Maria remarque", genre: "Novela de Guerra"},
-            ]);
-        }, 2500);
+                if (!response.ok) throw new Error("Failed to fetch books");
+
+                const data = await response.json();
+                const mappedBooks = data.map((book) => ({
+                    id: book.id,
+                    name: book.title,
+                    author: book.author,
+                    genre: book.category,
+                    publicationDate: book.publicationDate,
+                    isbn: book.isbn,
+                    rating: book.rating,
+                    visibility: book.visibility,
+                    stock: book.stock,
+                }));
+
+                setBooks(mappedBooks);
+            } catch (error) {
+                console.error("Fetch error:", error);
+            }
+        };
+
+        fetchBooks();
     }, []);
 
     return books;

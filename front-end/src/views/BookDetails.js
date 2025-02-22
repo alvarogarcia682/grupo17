@@ -6,7 +6,7 @@ import {BookContext} from '../context/BookContext';
 const BookDetails = () => {
     const {bookId} = useParams();
     const { books, addToCart } = useContext(BookContext);
-    const book = books.find(r => r.id === bookId);
+    const book = books.find((book) => book.id === Number(bookId));
 
     if (!book) {
         return <h2>Libro no encontrado</h2>;
