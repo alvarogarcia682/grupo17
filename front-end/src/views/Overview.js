@@ -24,25 +24,28 @@ export const Overview = () => {
             </div>
 
             <div className="book-container">
-                {
-                    books.length > 0 ? (
-                        filteredItems.length > 0 ? (
-                            filteredItems.map((book, index) => (
-                                <Book
-                                    key={index}
-                                    id={book.id}
-                                    name={book.name}
-                                    author={book.author}
-                                    genre={book.genre}
-                                />
-                            ))
-                        ) : (
-                            <p>No se encontraron libros que coincidan con la búsqueda.</p>
-                        )
+                {books.length > 0 ? (
+                    filteredItems.length > 0 ? (
+                        filteredItems.map((book, index) => (
+                            <Book
+                                key={index}
+                                id={book.id}
+                                name={book.name}
+                                author={book.author}
+                                genre={book.category}
+                                publicationDate={book.publicationDate}
+                                isbn={book.isbn}
+                                rating={book.rating}
+                                visibility={book.visibility}
+                                stock={book.stock}
+                            />
+                        ))
                     ) : (
-                        <LinearProgress color="secondary"/>
+                        <p>No se encontraron libros que coincidan con la búsqueda.</p>
                     )
-                }
+                ) : (
+                    <LinearProgress color="secondary" />
+                )}
             </div>
         </div>
     );

@@ -1,5 +1,5 @@
 server:
-  port: ${PORT:8761}
+  port: 8761
 
 ## Eureka Server Configuration
 eureka:
@@ -7,6 +7,6 @@ eureka:
     registerWithEureka: false
     fetchRegistry: false
   instance:
-    hostname: ${EUREKA_HOST:localhost}
+    hostname: eureka-server
   server:
     renewal-percent-threshold: 0.90
