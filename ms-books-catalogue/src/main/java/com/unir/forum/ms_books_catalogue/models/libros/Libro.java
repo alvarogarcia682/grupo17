@@ -1,31 +1,47 @@
-    package com.unir.forum.ms_books_catalogue.models.libros;
+package com.unir.forum.ms_books_catalogue.models.libros;
 
-    import jakarta.persistence.*;
-    import lombok.*;
-    import java.time.LocalDate;
+import lombok.*;
 
-    @Entity
-    @Table(name = "libros")
-    @Getter
-    @Setter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @ToString
-    public class Libro {
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
+import java.time.LocalDate;
 
-        private String title;
-        private String author;
+@Document(indexName = "libros")
+@Table(name = "libros")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+public class Libro {
 
-        @Column(name = "publication_date")
-        private LocalDate publicationDate;
+    @Id
+    private String id;
 
-        private String category;
-        private String isbn;
-        private int rating;
-        private boolean visibility;
-        private int stock;
-    }
+    @Field(type = FieldType.Text)
+    private String title;
+
+    @Field(type = FieldType.Text)
+    private String author;
+
+    @Field(type = FieldType.Date)
+    private LocalDate publicationDate;
+
+    @Field(type = FieldType.Keyword)
+    private String category;
+
+    @Field(type = FieldType.Keyword)
+    private String isbn;
+
+    @Field(type = FieldType.Integer)
+    private int rating;
+
+    @Field(type = FieldType.Boolean)
+    private boolean visibility;
+
+    @Field(type = FieldType.Integer)
+    private int stock;
+}
