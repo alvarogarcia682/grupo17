@@ -49,7 +49,7 @@ public class LibroService {
 
     public void eliminarLibro(String id) {
         libroRepositorio.deleteById(id);
-    }ó
+    }
     public List<Libro> buscarLibros(String title, String author, String category, String isbn,
                                     LocalDate publicationDate, Integer rating, Boolean visibility) {
         Criteria criteria = new Criteria();

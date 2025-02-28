@@ -39,6 +39,8 @@ services:
       - elasticsearch
     networks:
       - app-network
+    ports:
+      - "8080:8080"
 
   ms-books-payments:
     build: ./ms-books-payments
