@@ -10,7 +10,6 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 import java.time.LocalDate;
 
 @Document(indexName = "libros")
-@Table(name = "libros")
 @Getter
 @Setter
 @NoArgsConstructor

@@ -2,12 +2,11 @@ package com.unir.forum.ms_books_catalogue.service;
 
 import com.unir.forum.ms_books_catalogue.models.libros.Libro;
 import com.unir.forum.ms_books_catalogue.repositorio.LibroRepositorio;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.Criteria;
+import org.springframework.data.elasticsearch.core.query.CriteriaQuery;
+import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -18,11 +17,11 @@ import java.util.stream.Collectors;
 public class LibroService {
 
     private final LibroRepositorio libroRepositorio;
-    private final ElasticsearchRestTemplate elasticsearchTemplate;  // Motor de búsqueda
+    private final ElasticsearchOperations elasticsearchOperations;
 
-    public LibroService(LibroRepositorio libroRepositorio, ElasticsearchRestTemplate elasticsearchTemplate) {
+    public LibroService(LibroRepositorio libroRepositorio, ElasticsearchOperations elasticsearchOperations) {
         this.libroRepositorio = libroRepositorio;
-        this.elasticsearchTemplate = elasticsearchTemplate;
+        this.elasticsearchOperations = elasticsearchOperations;
     }
 
     public List<Libro> obtenerTodosLosLibros() {
@@ -50,38 +49,35 @@ public class LibroService {
 
     public void eliminarLibro(String id) {
         libroRepositorio.deleteById(id);
-    }
+    }ó
     public List<Libro> buscarLibros(String title, String author, String category, String isbn,
                                     LocalDate publicationDate, Integer rating, Boolean visibility) {
-        BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
+        Criteria criteria = new Criteria();
 
         if (title != null && !title.isEmpty()) {
-            queryBuilder.must(QueryBuilders.matchQuery("title", title));
+            criteria = criteria.and("title").matches(title);
         }
         if (author != null && !author.isEmpty()) {
-            queryBuilder.must(QueryBuilders.matchQuery("author", author));
+            criteria = criteria.and("author").matches(author);
         }
         if (category != null && !category.isEmpty()) {
-            queryBuilder.must(QueryBuilders.termQuery("category.keyword", category));
+            criteria = criteria.and("category").is(category);
         }
         if (isbn != null && !isbn.isEmpty()) {
-            queryBuilder.must(QueryBuilders.termQuery("isbn.keyword", isbn));
+            criteria = criteria.and("isbn").is(isbn);
         }
         if (publicationDate != null) {
-            queryBuilder.must(QueryBuilders.termQuery("publicationDate", publicationDate.toString()));
+            criteria = criteria.and("publicationDate").is(publicationDate.toString());
         }
         if (rating != null) {
-            queryBuilder.must(QueryBuilders.termQuery("rating", rating));
+            criteria = criteria.and("rating").is(rating);
         }
         if (visibility != null) {
-            queryBuilder.must(QueryBuilders.termQuery("visibility", visibility));
+            criteria = criteria.and("visibility").is(visibility);
         }
 
-        NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
-                .withQuery(queryBuilder)
-                .build();
-
-        SearchHits<Libro> searchHits = elasticsearchTemplate.search(searchQuery, Libro.class);
+        Query query = new CriteriaQuery(criteria);
+        SearchHits<Libro> searchHits = elasticsearchOperations.search(query, Libro.class);
 
         return searchHits.stream().map(hit -> hit.getContent()).collect(Collectors.toList());
     }

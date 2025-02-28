@@ -12,7 +12,7 @@ public interface LibroRepositorio extends ElasticsearchRepository<Libro, String>
     List<Libro> findByAuthorContaining(String author);
     List<Libro> findByCategory(String category);
     List<Libro> findByIsbn(String isbn);
-    List<Libro> findByPublicationDate(LocalDate publicationDate);
+    List<Libro> findByPublicationDate(String publicationDate);
     List<Libro> findByRating(int rating);
     List<Libro> findByVisibility(boolean visibility);
 }
